@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "parcel src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +17,20 @@
   "bugs": {
     "url": "https://github.com/ycmjason/2019-10-04-vuejs-london-conference-2019/issues"
   },
-  "homepage": "https://github.com/ycmjason/2019-10-04-vuejs-london-conference-2019#readme"
+  "homepage": "https://github.com/ycmjason/2019-10-04-vuejs-london-conference-2019#readme",
+  "dependencies": {
+    "@types/lodash.zip": "^4.2.6",
+    "@vue/composition-api": "^0.3.2",
+    "audio": "^1.2.0",
+    "lodash.zip": "^4.2.0",
+    "parcel-bundler": "^1.12.3",
+    "src": "^1.1.2",
+    "vue": "^2.6.10",
+    "vue-hot-reload-api": "^2.3.4"
+  },
+  "devDependencies": {
+    "@vue/component-compiler-utils": "^3.0.0",
+    "typescript": "^3.6.3",
+    "vue-template-compiler": "^2.6.10"
+  }
 }
