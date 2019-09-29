@@ -16,7 +16,7 @@ const setValueCurveForOneMinute = (param: AudioParam, values: Float32Array, star
   param.setValueCurveAtTime(valuesForAMinute, startTime, SECONDS_IN_MINUTE);
 };
 
-const createTremoloNode = (min = 0.1, max = 0.1125, durationMs = 350) => {
+const createTremoloNode = (min = 0.09, max = 0.09125, durationMs = 350) => {
   const gainNode = audioContext.createGain();
   setValueCurveForOneMinute(
     gainNode.gain,
