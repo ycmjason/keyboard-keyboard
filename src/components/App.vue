@@ -1,8 +1,21 @@
 <template>
   <div id="app">
-    <h1>Keyboard Keybaord</h1>
-    <PianoKeyboard startKey="F" :numberOfWhiteKeys="13" :labels="'q2w3e4rt6y7ui9o0p-[]'.split('')"></PianoKeyboard>
-    <PianoKeyboard startKey="F" :numberOfWhiteKeys="12" :labels="'`azsxdcvgbhnmk,l.;/'.split('')"></PianoKeyboard>
+    <h1>Keyboard-Keybaord</h1>
+
+    <PianoKeyboard
+      class="highOctaveKeyboard"
+      startKey="F"
+      :numberOfWhiteKeys="13"
+      :labels="'q2w3e4rt6y7ui9o0p-[]'.split('')"
+    ></PianoKeyboard>
+    <PianoKeyboard
+      class="lowOctaveKeyboard"
+      startKey="F"
+      :numberOfWhiteKeys="12"
+      :labels="'`azsxdcvgbhnmk,l.;/'.split('')"
+    ></PianoKeyboard>
+
+    <Footer class="footer"></Footer>
   </div>
 </template>
 
@@ -13,11 +26,12 @@ import zip from 'lodash.zip';
 import { playNote, stopNote } from '/audio';
 import { A4, SEMITONE, OCTAVE } from '/audio/frequencies';
 import PianoKeyboard from '/components/PianoKeyboard.vue';
+import Footer from '/components/Footer.vue';
 
 const frequencyForF = A4 * SEMITONE(-4) * OCTAVE(-1);
 
 export default Vue.extend({
-  components: { PianoKeyboard },
+  components: { PianoKeyboard, Footer },
   mounted() {
     const higherKeys = `q2w3e4rt6y7ui9o0p-[]`.split('');
     const higherFrequencies = Array.from({ length: 20 }, (_, i) => frequencyForF * SEMITONE(i));
@@ -65,7 +79,15 @@ html {
 
 
 <style lang="stylus" scoped>
-#app {
-  padding: 1rem;
+h1 {
+  text-align: center;
+}
+
+.highOctaveKeyboard {
+  margin-bottom: 1rem;
+}
+
+.footer {
+  margin-top: 3rem;
 }
 </style>

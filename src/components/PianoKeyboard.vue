@@ -82,6 +82,7 @@ export default createComponent({
 <style scoped>
 .piano-keyboard {
   display: flex;
+  justify-content: center;
   font-size: 2rem;
   --key--white-width: 4rem;
   --key--white-height: 11rem;
