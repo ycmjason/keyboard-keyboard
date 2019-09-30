@@ -1,0 +1,25 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - run: npm install
+      - run: npm run build
+      - name: Build and Deploy
+        uses: JamesIves/github-pages-deploy-action@master
+        env:
+         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+         BASE_BRANCH: master
+         BRANCH: gh-pages
+         FOLDER: dist
