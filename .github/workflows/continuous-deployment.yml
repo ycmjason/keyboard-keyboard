@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '10.x'
       - run: npm install
-      - run: npm run build
+      - run: npm run build -- --public-url /keyboard-keyboard
       - name: Build and Deploy
         uses: JamesIves/github-pages-deploy-action@master
         env:
