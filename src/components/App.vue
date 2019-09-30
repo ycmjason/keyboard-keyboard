@@ -2,61 +2,77 @@
   <div id="app">
     <h1>Keyboard-Keybaord</h1>
 
-    <PianoKeyboard
-      class="highOctaveKeyboard"
-      startKey="F"
-      :numberOfWhiteKeys="13"
-      :labels="'q2w3e4rt6y7ui9o0p-[]'.split('')"
-    ></PianoKeyboard>
-    <PianoKeyboard
-      class="lowOctaveKeyboard"
-      startKey="F"
-      :numberOfWhiteKeys="12"
-      :labels="'`azsxdcvgbhnmk,l.;/'.split('')"
-    ></PianoKeyboard>
+    <section class="container">
+      <div class="keyboards" tabindex="0" ref="keyboardsDivRef">
+        <PianoKeyboard
+          class="highOctaveKeyboard"
+          startKey="F"
+          :numberOfWhiteKeys="13"
+          :labels="higherKeys"
+          :isActives="higherIsPlayings"
+        ></PianoKeyboard>
+        <PianoKeyboard
+          class="lowOctaveKeyboard"
+          startKey="F"
+          :numberOfWhiteKeys="12"
+          :labels="lowerKeys"
+          :isActives="lowerIsPlayings"
+        ></PianoKeyboard>
+      </div>
+    </section>
 
     <Footer class="footer"></Footer>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import zip from 'lodash.zip';
-
-import { playNote, stopNote } from '/audio';
+import { createComponent, computed, ref, Ref } from '@vue/composition-api';
 import { A4, SEMITONE, OCTAVE } from '/audio/frequencies';
+import { useKeyDown } from '/compositions/useKeyDown';
 import PianoKeyboard from '/components/PianoKeyboard.vue';
 import Footer from '/components/Footer.vue';
+import { useMusicBox } from '/compositions/useMusicBox';
+import { arrayOfRefsToRefOfArray } from '/helpers/vue-composition-api';
 
 const frequencyForF = A4 * SEMITONE(-4) * OCTAVE(-1);
 
-export default Vue.extend({
+const useMusicalKeyboard = (
+  keys: string[],
+  startFrequency: number,
+  opts: { element?: Ref<GlobalEventHandlers | null> } = {},
+) => {
+  const { element = computed(() => window) } = opts;
+
+  const isKeyDowns = keys.map(key => useKeyDown(element, key).isKeyDown);
+
+  const isPlayings = arrayOfRefsToRefOfArray(isKeyDowns);
+  useMusicBox(startFrequency, isPlayings);
+
+  return { isPlayings };
+};
+
+export default createComponent({
   components: { PianoKeyboard, Footer },
-  mounted() {
+  setup() {
+    const keyboardsDivRef = ref<HTMLElement>(null);
+
     const higherKeys = `q2w3e4rt6y7ui9o0p-[]`.split('');
-    const higherFrequencies = Array.from({ length: 20 }, (_, i) => frequencyForF * SEMITONE(i));
+    const { isPlayings: higherIsPlayings } = useMusicalKeyboard(higherKeys, frequencyForF, {
+      element: keyboardsDivRef,
+    });
 
     const lowerKeys = `\`azsxdcvgbhnmk,l.;/`.split('');
-    const lowerFrequencies = higherFrequencies.slice(0, lowerKeys.length).map(f => f * OCTAVE(-1));
+    const { isPlayings: lowerIsPlayings } = useMusicalKeyboard(lowerKeys, frequencyForF * OCTAVE(-1), {
+      element: keyboardsDivRef,
+    });
 
-    const frequencies = [...lowerFrequencies, ...higherFrequencies];
-    const keys = [...lowerKeys, ...higherKeys];
-
-    for (const [key, frequency] of zip(keys, frequencies)) {
-      if (!key || !frequency) continue;
-
-      window.addEventListener('keydown', e => {
-        if (e.key === key) {
-          playNote(frequency);
-        }
-      });
-
-      window.addEventListener('keyup', e => {
-        if (e.key === key) {
-          stopNote(frequency);
-        }
-      });
-    }
+    return {
+      higherKeys,
+      higherIsPlayings,
+      lowerKeys,
+      lowerIsPlayings,
+      keyboardsDivRef,
+    };
   },
 });
 </script>
@@ -67,7 +83,7 @@ export default Vue.extend({
 html {
   box-sizing: border-box;
   font-family: 'Indie Flower', cursive;
-  font-size: 18px;
+  font-size: 28px;
 }
 
 *,
@@ -81,6 +97,16 @@ html {
 <style lang="stylus" scoped>
 h1 {
   text-align: center;
+}
+
+.container {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.keyboards {
+  padding: 1rem;
 }
 
 .highOctaveKeyboard {

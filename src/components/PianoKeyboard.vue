@@ -1,6 +1,6 @@
 <template>
   <div class="piano-keyboard">
-    <div v-for="(key, i) of keys" :key="i" class="key" :class="isWhiteKey(key.name) ? 'key--white' : 'key--black'">
+    <div v-for="(key, i) of keys" :key="i" class="key" :class="key.class">
       {{ key.label }}
     </div>
   </div>
@@ -57,6 +57,10 @@ export default createComponent({
       type: Array as () => string[],
       default: () => [],
     },
+    isActives: {
+      type: Array as () => boolean[],
+      default: () => [],
+    },
   },
   setup(props) {
     const endKey = computed(() => stepNWhiteKeys(props.startKey, props.numberOfWhiteKeys - 1));
@@ -68,10 +72,18 @@ export default createComponent({
     });
 
     const keys = computed(() => {
-      return Array.from({ length: numberOfSemitones.value }, (_, i) => ({
-        name: stepNSemitoneFrom(props.startKey, i),
-        label: props.labels[i] || '',
-      }));
+      return Array.from({ length: numberOfSemitones.value }, (_, i) => {
+        const name = stepNSemitoneFrom(props.startKey, i);
+        return {
+          name,
+          label: props.labels[i] || '',
+          class: {
+            'key--black': isBlackKey(name),
+            'key--white': isWhiteKey(name),
+            'key--active': props.isActives[i],
+          },
+        };
+      });
     });
 
     return { keys, isWhiteKey };
@@ -83,11 +95,16 @@ export default createComponent({
 .piano-keyboard {
   display: flex;
   justify-content: center;
-  font-size: 2rem;
-  --key--white-width: 4rem;
-  --key--white-height: 11rem;
-  --key--black-width: 3rem;
-  --key--black-height: 6rem;
+  overflow: hidden;
+  --key--white-background: #ffffff;
+  --key--white-width: 2rem;
+  --key--white-height: 5.5rem;
+
+  --key--black-background: #3d3d3d;
+  --key--black-width: 1.5rem;
+  --key--black-height: 3rem;
+
+  --key--padding: 0.3rem;
 }
 
 .key {
@@ -95,15 +112,19 @@ export default createComponent({
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding: 1rem;
+  padding: var(--key--padding);
 }
 
 .key--white {
-  background: white;
+  background: var(--key--white-background);
   color: black;
   width: var(--key--white-width);
   height: var(--key--white-height);
   z-index: 1;
+}
+
+.key--white.key--active {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7) inset;
 }
 
 .key--black + .key--white {
@@ -111,11 +132,15 @@ export default createComponent({
 }
 
 .key--black {
-  background: black;
+  background: var(--key--black-background);
   color: white;
   width: var(--key--black-width);
   height: var(--key--black-height);
   z-index: 2;
   margin-left: calc(-1 * var(--key--black-width) / 2);
+  box-shadow: 0 -1px 8px rgba(0, 0, 0, 0.8);
+}
+.key--black.key--active {
+  box-shadow: none;
 }
 </style>
