@@ -1,13 +1,13 @@
-import { watch, Ref } from '@vue/composition-api';
+import { watch, Ref, computed } from '@vue/composition-api';
 import { playNote, stopNote } from '/audio';
 import { SEMITONE } from '/audio/frequencies';
 import zip from 'lodash.zip';
 
 export const useMusicBox = (lowestFrequency: number, isPlayings: Ref<boolean[]>) => {
-  watch(isPlayings, (isPlayings, oldIsPlayings) => {
-    const frequencies = isPlayings.map((_, i) => lowestFrequency * SEMITONE(i));
+  const frequencies = computed(() => isPlayings.value.map((_, i) => lowestFrequency * SEMITONE(i)));
 
-    for (const [frequency, isPlaying, oldIsPlaying] of zip(frequencies, isPlayings, oldIsPlayings)) {
+  watch(isPlayings, (isPlayings, oldIsPlayings) => {
+    for (const [frequency, isPlaying, oldIsPlaying] of zip(frequencies.value, isPlayings, oldIsPlayings)) {
       if (!frequency) continue;
       if (typeof isPlaying === 'undefined' || typeof oldIsPlaying === 'undefined') continue;
 

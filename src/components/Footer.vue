@@ -4,6 +4,10 @@
   </footer>
 </template>
 
+<script>
+export default {};
+</script>
+
 <style scoped>
 footer {
   padding-top: 3rem;

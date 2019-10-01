@@ -15,14 +15,12 @@ export const useKeyDown = (elementRef: Ref<GlobalEventHandlers | null>, key: str
     isKeyDown.value = false;
   };
 
-  const reset = () => (isKeyDown.value = false);
-
   watch(elementRef, (element, old) => {
     if (element) {
       element.addEventListener('keydown', onKeyDown);
       element.addEventListener('keyup', onKeyUp);
     } else {
-      reset();
+      isKeyDown.value = false;
     }
 
     if (old) {
