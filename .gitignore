@@ -2,6 +2,7 @@
 # profile used: node
 *.sw*
 .DS_Store
+.vscode
 dist
 .cache
 node_modules
