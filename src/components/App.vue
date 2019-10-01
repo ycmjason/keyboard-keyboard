@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref, Ref } from '@vue/composition-api';
+import { createComponent, ref } from '@vue/composition-api';
 import { A4, SEMITONE, OCTAVE } from '/audio/frequencies';
 import { useKeyDown } from '/compositions/useKeyDown';
 import PianoKeyboard from '/components/PianoKeyboard.vue';
@@ -36,28 +36,22 @@ import { arrayOfRefsToRefOfArray } from '/helpers/vue-composition-api';
 
 const frequencyForF = A4 * SEMITONE(-4) * OCTAVE(-1);
 
-const useMusicalKeyboard = (element: Ref<GlobalEventHandlers | null>, keys: string[], startFrequency: number) => {
-  const isPlayings = arrayOfRefsToRefOfArray(keys.map(key => useKeyDown(element, key).isKeyDown));
-
-  useMusicBox(startFrequency, isPlayings);
-
-  return { isPlayings };
-};
-
 export default createComponent({
   components: { PianoKeyboard, Footer },
   setup() {
     const keyboardsDivRef = ref<HTMLElement>(null);
 
     const higherTriggerKeys = `q2w3e4rt6y7ui9o0p-[]`.split('');
-    const { isPlayings: higherIsPlayings } = useMusicalKeyboard(keyboardsDivRef, higherTriggerKeys, frequencyForF);
+    const higherIsPlayings = arrayOfRefsToRefOfArray(
+      higherTriggerKeys.map(key => useKeyDown(keyboardsDivRef, key).isKeyDown),
+    );
+    useMusicBox(frequencyForF, higherIsPlayings);
 
     const lowerTriggerKeys = `\`azsxdcvgbhnmk,l.;/`.split('');
-    const { isPlayings: lowerIsPlayings } = useMusicalKeyboard(
-      keyboardsDivRef,
-      lowerTriggerKeys,
-      frequencyForF * OCTAVE(-1),
+    const lowerIsPlayings = arrayOfRefsToRefOfArray(
+      lowerTriggerKeys.map(key => useKeyDown(keyboardsDivRef, key).isKeyDown),
     );
+    useMusicBox(frequencyForF * OCTAVE(-1), lowerIsPlayings);
 
     return {
       higherTriggerKeys,
