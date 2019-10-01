@@ -24,7 +24,7 @@ const stepNSemitoneFrom = (keyName: KeyName, n: number): KeyName => {
 export default createComponent({
   props: {
     startKey: {
-      type: String as () => 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G',
+      type: String as () => KeyName,
       required: true,
     },
     numberOfKeys: {
