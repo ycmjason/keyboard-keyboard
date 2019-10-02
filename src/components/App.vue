@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref, computed } from '@vue/composition-api';
+import { createComponent, ref, computed, Ref } from '@vue/composition-api';
 import { A4, SEMITONE, OCTAVE } from '/audio/frequencies';
 import { useKeyDown } from '/compositions/useKeyDown';
 import PianoKeyboard from '/components/PianoKeyboard.vue';
@@ -36,33 +36,37 @@ import zip from 'lodash.zip';
 
 const F2 = A4 * SEMITONE(-4) * OCTAVE(-1);
 
+const usePiano = (
+  startingFrequency: number,
+  keys: string[],
+  triggerZone: Ref<GlobalEventHandlers | null>,
+): Ref<boolean[]> => {
+  const frequencies = keys.map((_, i) => startingFrequency * SEMITONE(i));
+  const isPlayings = keys.map(key => useKeyDown(triggerZone, key).isKeyDown);
+  for (const [frequency, isPlaying] of zip(frequencies, isPlayings)) {
+    if (!frequency || !isPlaying) continue;
+    useMusicNote(frequency, isPlaying);
+  }
+
+  return computed(() => isPlayings.map(({ value }) => value));
+};
+
 export default createComponent({
   components: { PianoKeyboard, Footer },
   setup() {
     const keyboardsDivRef = ref<HTMLElement>(null);
 
     const higherTriggerKeys = `q2w3e4rt6y7ui9o0p-[]`.split('');
-    const higherIsPlayings = higherTriggerKeys.map(key => useKeyDown(keyboardsDivRef, key).isKeyDown);
-    const higherFrequencies = higherTriggerKeys.map((_, i) => F2 * SEMITONE(i));
-    for (const [frequency, isPlaying] of zip(higherFrequencies, higherIsPlayings)) {
-      if (!frequency || !isPlaying) continue;
-      useMusicNote(frequency, isPlaying);
-    }
+    const higherIsPlayings = usePiano(F2, higherTriggerKeys, keyboardsDivRef);
 
     const lowerTriggerKeys = `\`azsxdcvgbhnmk,l.;/`.split('');
-    const lowerIsPlayings = lowerTriggerKeys.map(key => useKeyDown(keyboardsDivRef, key).isKeyDown);
-
-    const lowerFrequencies = higherTriggerKeys.map((_, i) => F2 * SEMITONE(i));
-    for (const [frequency, isPlaying] of zip(lowerFrequencies, lowerIsPlayings)) {
-      if (!frequency || !isPlaying) continue;
-      useMusicNote(frequency, isPlaying);
-    }
+    const lowerIsPlayings = usePiano(F2 * OCTAVE(-1), lowerTriggerKeys, keyboardsDivRef);
 
     return {
       higherTriggerKeys,
-      higherIsPlayings: computed(() => higherIsPlayings.map(({ value }) => value)),
+      higherIsPlayings,
       lowerTriggerKeys,
-      lowerIsPlayings: computed(() => lowerIsPlayings.map(({ value }) => value)),
+      lowerIsPlayings,
       keyboardsDivRef,
     };
   },
