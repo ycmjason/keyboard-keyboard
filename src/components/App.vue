@@ -26,15 +26,15 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref } from '@vue/composition-api';
+import { createComponent, ref, computed } from '@vue/composition-api';
 import { A4, SEMITONE, OCTAVE } from '/audio/frequencies';
 import { useKeyDown } from '/compositions/useKeyDown';
 import PianoKeyboard from '/components/PianoKeyboard.vue';
 import Footer from '/components/Footer.vue';
-import { useMusicBox } from '/compositions/useMusicBox';
-import { arrayOfRefsToRefOfArray } from '/helpers/vue-composition-api';
+import { useMusicNote } from '/compositions/useMusicNote';
+import zip from 'lodash.zip';
 
-const frequencyForF = A4 * SEMITONE(-4) * OCTAVE(-1);
+const F2 = A4 * SEMITONE(-4) * OCTAVE(-1);
 
 export default createComponent({
   components: { PianoKeyboard, Footer },
@@ -42,22 +42,27 @@ export default createComponent({
     const keyboardsDivRef = ref<HTMLElement>(null);
 
     const higherTriggerKeys = `q2w3e4rt6y7ui9o0p-[]`.split('');
-    const higherIsPlayings = arrayOfRefsToRefOfArray(
-      higherTriggerKeys.map(key => useKeyDown(keyboardsDivRef, key).isKeyDown),
-    );
-    useMusicBox(frequencyForF, higherIsPlayings);
+    const higherIsPlayings = higherTriggerKeys.map(key => useKeyDown(keyboardsDivRef, key).isKeyDown);
+    const higherFrequencies = higherTriggerKeys.map((_, i) => F2 * SEMITONE(i));
+    for (const [frequency, isPlaying] of zip(higherFrequencies, higherIsPlayings)) {
+      if (!frequency || !isPlaying) continue;
+      useMusicNote(frequency, isPlaying);
+    }
 
     const lowerTriggerKeys = `\`azsxdcvgbhnmk,l.;/`.split('');
-    const lowerIsPlayings = arrayOfRefsToRefOfArray(
-      lowerTriggerKeys.map(key => useKeyDown(keyboardsDivRef, key).isKeyDown),
-    );
-    useMusicBox(frequencyForF * OCTAVE(-1), lowerIsPlayings);
+    const lowerIsPlayings = lowerTriggerKeys.map(key => useKeyDown(keyboardsDivRef, key).isKeyDown);
+
+    const lowerFrequencies = higherTriggerKeys.map((_, i) => F2 * SEMITONE(i));
+    for (const [frequency, isPlaying] of zip(lowerFrequencies, lowerIsPlayings)) {
+      if (!frequency || !isPlaying) continue;
+      useMusicNote(frequency, isPlaying);
+    }
 
     return {
       higherTriggerKeys,
-      higherIsPlayings,
+      higherIsPlayings: computed(() => higherIsPlayings.map(({ value }) => value)),
       lowerTriggerKeys,
-      lowerIsPlayings,
+      lowerIsPlayings: computed(() => lowerIsPlayings.map(({ value }) => value)),
       keyboardsDivRef,
     };
   },
