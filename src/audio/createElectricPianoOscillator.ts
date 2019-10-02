@@ -33,7 +33,7 @@ export const createElectricPianoOscillator = (frequency: number) => {
   tremoloNode.connect(audioContext.destination);
 
   const oscillator = audioContext.createOscillator();
-  oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+  oscillator.frequency.value = frequency;
   oscillator.setPeriodicWave(audioContext.createPeriodicWave(organWave.real, organWave.imag));
   oscillator.connect(tremoloNode);
 
