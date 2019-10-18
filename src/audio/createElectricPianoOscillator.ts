@@ -1,5 +1,8 @@
 import organWave from '/audio/waves/piano.wave.json';
 
+const organWaveReal = new Float32Array(organWave.real);
+const organWaveImag = new Float32Array(organWave.imag);
+
 const audioContext = new AudioContext();
 
 const setValueCurveAtTimeForOneMinute = (
@@ -34,7 +37,7 @@ export const createElectricPianoOscillator = (frequency: number) => {
 
   const oscillator = audioContext.createOscillator();
   oscillator.frequency.value = frequency;
-  oscillator.setPeriodicWave(audioContext.createPeriodicWave(organWave.real, organWave.imag));
+  oscillator.setPeriodicWave(audioContext.createPeriodicWave(organWaveReal, organWaveImag));
   oscillator.connect(tremoloNode);
 
   return oscillator;
