@@ -13,7 +13,6 @@ export const playNote = (frequency: number) => {
 export const stopNote = (frequency: number) => {
   const oscillator = frequencyOscillatorMap.get(frequency);
   frequencyOscillatorMap.delete(frequency);
-  if (!oscillator) return;
 
-  oscillator.stop();
+  oscillator?.stop();
 };

@@ -25,15 +25,17 @@
     "audio": "^1.2.0",
     "lodash.zip": "^4.2.0",
     "normalize.css": "^8.0.1",
-    "parcel-bundler": "^1.12.3",
+    "parcel-bundler": "^1.12.4",
     "src": "^1.1.2",
     "vue": "^2.6.10",
     "vue-hot-reload-api": "^2.3.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.6.0",
     "@vue/component-compiler-utils": "^3.0.0",
     "stylus": "^0.54.7",
-    "typescript": "^3.6.3",
+    "typescript": "^3.7.1-rc",
     "vue-template-compiler": "^2.6.10"
   }
 }
