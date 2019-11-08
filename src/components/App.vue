@@ -19,6 +19,16 @@
           :isActives="lowerIsPlayings"
         ></PianoKeyboard>
       </div>
+
+      <div class="config">
+        <div>Transpose (semitone)</div>
+        <div>
+          <input class="config-display-input" type="text" readonly :value="transpose" />
+        </div>
+        <div>
+          <input type="range" :min="-12" :max="12" v-model="transpose" />
+        </div>
+      </div>
     </section>
 
     <Footer class="footer"></Footer>
@@ -37,11 +47,11 @@ import zip from 'lodash.zip';
 const F2 = A4 * SEMITONE(-4) * OCTAVE(-1);
 
 const usePiano = (
-  startingFrequency: number,
+  startingFrequency: Ref<number>,
   keys: string[],
   triggerZone: Ref<GlobalEventHandlers | null>,
 ): Ref<boolean[]> => {
-  const frequencies = keys.map((_, i) => startingFrequency * SEMITONE(i));
+  const frequencies = keys.map((_, i) => computed(() => startingFrequency.value * SEMITONE(i)));
   const isPlayings = keys.map(key => useKeyDown(triggerZone, key).isKeyDown);
   for (const [frequency, isPlaying] of zip(frequencies, isPlayings)) {
     if (!frequency || !isPlaying) continue;
@@ -56,11 +66,21 @@ export default createComponent({
   setup() {
     const keyboardsDivRef = ref<HTMLElement>(null);
 
+    const transpose = ref(0);
+
     const higherTriggerKeys = `q2w3e4rt6y7ui9o0p-[]`.split('');
-    const higherIsPlayings = usePiano(F2, higherTriggerKeys, keyboardsDivRef);
+    const higherIsPlayings = usePiano(
+      computed(() => F2 * SEMITONE(transpose.value)),
+      higherTriggerKeys,
+      keyboardsDivRef,
+    );
 
     const lowerTriggerKeys = `\`azsxdcvgbhnmk,l.;/`.split('');
-    const lowerIsPlayings = usePiano(F2 * OCTAVE(-1), lowerTriggerKeys, keyboardsDivRef);
+    const lowerIsPlayings = usePiano(
+      computed(() => F2 * OCTAVE(-1) * SEMITONE(transpose.value)),
+      lowerTriggerKeys,
+      keyboardsDivRef,
+    );
 
     return {
       higherTriggerKeys,
@@ -68,6 +88,7 @@ export default createComponent({
       lowerTriggerKeys,
       lowerIsPlayings,
       keyboardsDivRef,
+      transpose,
     };
   },
 });
@@ -90,7 +111,7 @@ html {
 </style>
 
 
-<style lang="stylus" scoped>
+<style scoped>
 h1 {
   text-align: center;
 }
@@ -111,5 +132,22 @@ h1 {
 
 .footer {
   margin-top: 3rem;
+}
+
+.config {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 5fr 1fr 11fr;
+  align-items: center;
+  grid-gap: 1rem;
+}
+
+.config .config-display-input {
+  width: 3rem;
+  text-align: center;
+}
+
+.config input[type='range'] {
+  width: 100%;
 }
 </style>
