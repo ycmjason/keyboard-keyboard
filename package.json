@@ -20,22 +20,19 @@
   },
   "homepage": "https://github.com/ycmjason/2019-10-04-vuejs-london-conference-2019#readme",
   "dependencies": {
-    "@types/lodash.zip": "^4.2.6",
     "@vue/composition-api": "^0.3.4",
-    "audio": "^1.2.0",
     "lodash.zip": "^4.2.0",
     "normalize.css": "^8.0.1",
     "parcel-bundler": "^1.12.4",
-    "src": "^1.1.2",
-    "vue": "^2.6.11",
-    "vue-hot-reload-api": "^2.3.4"
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
+    "@types/lodash.zip": "^4.2.6",
     "@vue/component-compiler-utils": "^3.1.0",
-    "stylus": "^0.54.7",
     "typescript": "^3.7.4",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vue-hot-reload-api": "^2.3.4"
   }
 }
