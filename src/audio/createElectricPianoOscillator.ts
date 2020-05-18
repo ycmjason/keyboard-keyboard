@@ -1,4 +1,4 @@
-import organWave from '/audio/waves/piano.wave.json';
+import organWave from '@/audio/waves/piano.wave.json';
 
 const organWaveReal = new Float32Array(organWave.real);
 const organWaveImag = new Float32Array(organWave.imag);

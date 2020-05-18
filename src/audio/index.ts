@@ -1,4 +1,4 @@
-import { createElectricPianoOscillator } from '/audio/createElectricPianoOscillator';
+import { createElectricPianoOscillator } from '@/audio/createElectricPianoOscillator';
 
 const frequencyOscillatorMap: Map<number, OscillatorNode> = new Map();
 

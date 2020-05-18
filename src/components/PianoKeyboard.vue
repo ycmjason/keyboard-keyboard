@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts">
-import { createComponent, computed } from '@vue/composition-api';
-import { mod } from '/helpers/math';
+import { defineComponent, computed } from 'vue';
+import { mod } from '@/helpers/math';
 
 const KEY_NAMES = ['A', 'A#/Bb', 'B', 'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab'] as const;
 type KeyName = typeof KEY_NAMES[number];
@@ -21,7 +21,7 @@ const stepNSemitoneFrom = (keyName: KeyName, n: number): KeyName => {
   return KEY_NAMES[index];
 };
 
-export default createComponent({
+export default defineComponent({
   props: {
     startKey: {
       type: String as () => KeyName,

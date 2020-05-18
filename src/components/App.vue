@@ -36,12 +36,12 @@
 </template>
 
 <script lang="ts">
-import { createComponent, ref, computed, Ref } from '@vue/composition-api';
-import { A4, SEMITONE, OCTAVE } from '/audio/frequencies';
-import { useKeyDown } from '/compositions/useKeyDown';
-import PianoKeyboard from '/components/PianoKeyboard.vue';
-import Footer from '/components/Footer.vue';
-import { useMusicNote } from '/compositions/useMusicNote';
+import { defineComponent, ref, computed, Ref } from 'vue';
+import { A4, SEMITONE, OCTAVE } from '@/audio/frequencies';
+import { useKeyDown } from '@/compositions/useKeyDown';
+import PianoKeyboard from '@/components/PianoKeyboard.vue';
+import Footer from '@/components/Footer.vue';
+import { useMusicNote } from '@/compositions/useMusicNote';
 import zip from 'lodash.zip';
 
 const F2 = A4 * SEMITONE(-4) * OCTAVE(-1);
@@ -52,7 +52,7 @@ const usePiano = (
   triggerZone: Ref<GlobalEventHandlers | null>,
 ): Ref<boolean[]> => {
   const frequencies = keys.map((_, i) => computed(() => startingFrequency.value * SEMITONE(i)));
-  const isPlayings = keys.map(key => useKeyDown(triggerZone, key).isKeyDown);
+  const isPlayings = keys.map((key) => useKeyDown(triggerZone, key).isKeyDown);
   for (const [frequency, isPlaying] of zip(frequencies, isPlayings)) {
     if (!frequency || !isPlaying) continue;
     useMusicNote(frequency, isPlaying);
@@ -61,10 +61,10 @@ const usePiano = (
   return computed(() => isPlayings.map(({ value }) => value));
 };
 
-export default createComponent({
+export default defineComponent({
   components: { PianoKeyboard, Footer },
   setup() {
-    const keyboardsDivRef = ref<HTMLElement>(null);
+    const keyboardsDivRef = ref<HTMLElement | null>(null);
 
     const transpose = ref(0);
 
@@ -95,7 +95,7 @@ export default createComponent({
 </script>
 
 <style>
-@import 'normalize.css';
+@import '~normalize.css';
 
 html {
   box-sizing: border-box;
@@ -109,7 +109,6 @@ html {
   box-sizing: inherit;
 }
 </style>
-
 
 <style scoped>
 h1 {

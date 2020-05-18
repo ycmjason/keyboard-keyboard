@@ -1,4 +1,4 @@
-import { Ref, watch, ref } from '@vue/composition-api';
+import { Ref, watch, ref } from 'vue';
 
 export const useKeyDown = (elementRef: Ref<GlobalEventHandlers | null>, key: string) => {
   const isKeyDown = ref(false);

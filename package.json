@@ -5,8 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "parcel build src/index.html",
-    "dev": "parcel src/index.html",
+    "build": "webpack --env.prod",
+    "dev": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,19 +20,28 @@
   },
   "homepage": "https://github.com/ycmjason/2019-10-04-vuejs-london-conference-2019#readme",
   "dependencies": {
-    "@vue/composition-api": "^0.4.0",
     "lodash.zip": "^4.2.0",
     "normalize.css": "^8.0.1",
-    "parcel-bundler": "^1.12.4",
-    "vue": "^2.6.11"
+    "vue": "^3.0.0-beta.13"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-typescript": "^7.9.0",
     "@types/lodash.zip": "^4.2.6",
-    "@vue/component-compiler-utils": "^3.1.1",
-    "typescript": "^3.8.2",
-    "vue-template-compiler": "^2.6.11",
-    "vue-hot-reload-api": "^2.3.4"
+    "@vue/compiler-sfc": "^3.0.0-beta.13",
+    "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^6.0.1",
+    "css-loader": "^3.5.3",
+    "file-loader": "^6.0.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.2",
+    "vue-loader": "^16.0.0-alpha.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
   }
 }
