@@ -1,0 +1,116 @@
+
+.piano-keyboard {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  --key--white-background: #ffffff;
+  --key--white-width: 2rem;
+  --key--white-height: 5.5rem;
+
+  --key--black-background: #3d3d3d;
+  --key--black-width: 1.5rem;
+  --key--black-height: 3rem;
+
+  --key--padding: 0.3rem;
+}
+
+.key {
+  border: 1px black solid;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: var(--key--padding);
+}
+
+.key--white {
+  background: var(--key--white-background);
+  color: black;
+  width: var(--key--white-width);
+  height: var(--key--white-height);
+  z-index: 1;
+}
+
+.key--white.key--active {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.7) inset;
+}
+
+.key--black + .key--white {
+  margin-left: calc(-1 * var(--key--black-width) / 2);
+}
+
+.key--black {
+  background: var(--key--black-background);
+  color: white;
+  width: var(--key--black-width);
+  height: var(--key--black-height);
+  z-index: 2;
+  margin-left: calc(-1 * var(--key--black-width) / 2);
+  box-shadow: 0 -1px 8px rgba(0, 0, 0, 0.8);
+}
+.key--black.key--active {
+  box-shadow: none;
+}
+
+
+footer {
+  padding-top: 3rem;
+  padding-bottom: 2rem;
+  background: #a5b8f0;
+  text-align: center;
+}
+
+
+html {
+  box-sizing: border-box;
+  font-family: 'Indie Flower', cursive;
+  font-size: 28px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+
+h1 {
+  text-align: center;
+}
+
+.container {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.keyboards {
+  padding: 1rem;
+}
+
+.highOctaveKeyboard {
+  margin-bottom: 1rem;
+}
+
+.footer {
+  margin-top: 3rem;
+}
+
+.config {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 5fr 1fr 11fr;
+  align-items: center;
+  grid-gap: 1rem;
+}
+
+.config .config-display-input {
+  width: 3rem;
+  text-align: center;
+}
+
+.config input[type='range'] {
+  width: 100%;
+}
+
+
+/*# sourceMappingURL=main.css.map*/
