@@ -1,5 +1,5 @@
 import { watch, Ref, watchEffect } from 'vue';
-import { playNote, stopNote } from '@/audio';
+import { playNote, stopNote } from '/@/audio';
 
 export const useMusicNote = (frequency: Ref<number>, isPlaying: Ref<boolean>) => {
   watchEffect(() => {

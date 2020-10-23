@@ -37,12 +37,12 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, Ref } from 'vue';
-import { A4, SEMITONE, OCTAVE } from '@/audio/frequencies';
-import { useKeyDown } from '@/compositions/useKeyDown';
-import PianoKeyboard from '@/components/PianoKeyboard.vue';
-import Footer from '@/components/Footer.vue';
-import { useMusicNote } from '@/compositions/useMusicNote';
-import zip from 'lodash.zip';
+import { A4, SEMITONE, OCTAVE } from '/@/audio/frequencies';
+import { useKeyDown } from '/@/compositions/useKeyDown';
+import PianoKeyboard from '/@/components/PianoKeyboard.vue';
+import Footer from '/@/components/Footer.vue';
+import { useMusicNote } from '/@/compositions/useMusicNote';
+import { zip } from 'lodash-es';
 
 const F2 = A4 * SEMITONE(-4) * OCTAVE(-1);
 
@@ -95,7 +95,7 @@ export default defineComponent({
 </script>
 
 <style>
-@import '~normalize.css';
+@import 'normalize.css';
 
 html {
   box-sizing: border-box;

@@ -3,7 +3,6 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
     "lib": ["esnext", "DOM"],
     "module": "esnext",
     "moduleResolution": "node",
@@ -18,8 +17,8 @@
     "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "/@/*": ["app/src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.vue"]
+  "include": ["app/src/**/*.ts", "app/src/**/*.vue"]
 }

@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { mod } from '@/helpers/math';
+import { mod } from '/@/helpers/math';
 
 const KEY_NAMES = ['A', 'A#/Bb', 'B', 'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab'] as const;
 type KeyName = typeof KEY_NAMES[number];
