@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/ycmjason/2019-10-04-vuejs-london-conference-2019#readme",
   "dependencies": {
-    "lodash-es": "^4.17.15",
+    "lodash-es": "^4.17.21",
     "lodash.zip": "^4.2.0",
     "normalize.css": "^8.0.1",
     "vue": "^3.0.2"
